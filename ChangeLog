@@ -1,3 +1,16 @@
+Version 0.2.10-SNAPSHOT
+-----------------------
+ - Forking original and hosting on github
+ - Refactored to own package structure to avoid conflicting with released j2ssh builds.
+ - Switched from ant to maven
+ - Removed the ant plugin code
+ - Added dependency on Java 1.6 or higher
+ - Combined common,daemon,j2ssh into a single jar (may split this apart again in the future)
+
+
+------------------------------------------
+Previous versions from sourceforge project
+------------------------------------------
 
 Version 0.2.9
 -------------
