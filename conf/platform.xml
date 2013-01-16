@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Platform configuration file - Determines the behaviour of platform specific services
+-->
+<PlatformConfiguration>
+   <!-- The process provider for executing and redirecting a process -->
+   <NativeProcessProvider></NativeProcessProvider>
+   <!-- The authentication provider for authenticating users and obtaining user information -->
+   <NativeAuthenticationProvider></NativeAuthenticationProvider>
+   <!-- The file system provider for SFTP -->
+   <NativeFileSystemProvider></NativeFileSystemProvider>
+   <!-- Native settings which may be used by the process or authentication provider -->
+   <!-- Add native settings here -->
+   <!-- <NativeSetting Name="AuthenticateOnDomain" Value="."/> -->
+</PlatformConfiguration>

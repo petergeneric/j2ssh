@@ -1,0 +1,33 @@
+
+Version 0.2.9
+-------------
+
+* com/sshtools/j2ssh/io/ByteArrayWriter.java (sahu)
+  - UFT-8 patch
+
+* applied patch number [977590] 
+  - possible deadlock in transport lock handling
+
+* made source compilable with Java 5 (sahu)
+  - enum -> en
+  - changed getState() -> getStartStopState() [SessionChannelServer.java]
+
+* cosmetic refactoring (sahu)
+  - removed calls to deprecated methods
+  - example: hide() replaced by setVisible()
+  
+* com/sshtools/j2ssh/sftp/FileAttributes.java (sahu)
+  - fixed test for symbolic links
+
+*  com/sshtools/j2ssh/sftp/SftpFile.java (sahu)
+  - changed permission handling
+  
+* rekey patch (sahu)
+  - rekey bug when more than 1 GB is transferred
+
+
+Version 0.2.8
+-------------
+
+- changed license to GPL only
+- changed ant build.xml file to compile j2ssh with Java > 1.4

@@ -1,0 +1,13 @@
+*.class
+.project
+.classpath
+.metadata
+.settings
+target/
+META-INF/
+.DS_Store
+*.ipr
+*.iws
+.idea/
+*.iml
+atlassian-ide-plugin.xml

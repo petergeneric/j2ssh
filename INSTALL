@@ -1,0 +1,53 @@
+
+====================
+Using Sshtools J2SSH
+====================
+	
+1) First unzip the distribution file into the PATH_OF_YOUR_CHOICE which we refer to as $INSTALL_DIR.
+2) Build the JAR files using the ant script $INSTALL_DIR/build.xml
+3) Add the JAR files to your class path.
+   
+=========
+JAR files
+=========
+The Sshtools distribution comes a number jar files, they are
+
+j2ssh-core-VERSION.jar 
+The core jar file contains SSH client components, the J2SSH core now implements
+most of the basic ssh specifications and implements a number of clients including ssh, sftp and scp.
+The core also includes the ssh agent implementation, port forwarding, proxy components and a framework
+for extending channels, subsystems and all ssh protocol algorithms.
+
+j2ssh-ant-VERSION.jar
+This file contains the J2SSH ant tasks
+
+j2ssh-common-VERSION.jar
+The common jar file contains a number of reusable components such as Swing authentication 
+prompts, an xml configuration context, remote identification and configuration automation utilites.
+
+j2ssh-daemon-VERSION.jar
+The daemon file implements the server side components in conjunction with the j2ssh core.
+
+=====================
+J2SSH dependencies
+=====================
+   
+The dependencies vary for J2SSH depending upon the JDK and individual J2SSH jar files required
+by your implementation.
+
+If you are using JDK 1.4 or greater, the only dependency the j2ssh jar files require 
+is commons-logging.jar with the exception of the J2SSH ant tasks which also require ant.jar
+
+For JDK 1.3.1 the core requires a JCE provider. We have tested the core using the bouncycastle JCE which
+is provided with the JDK 1.3.1 distribution file. If you are using the common or daemon jar files with 
+JDK 1.3.1 you will also need to include xerces for xml parsing which is also included.
+
+=================
+Building Sshtools
+=================
+    
+If you downloaded the source distribution you need to build the binaries before
+using sshtools. Like most java appilications today, Sshtools relies on ANT as 
+its buildtool. ANT is availale from "http://jakarta.apache.org/ant/".  ANT
+requires a build file called build.xml which can be found in the $INSTALL_DIR
+directory. 

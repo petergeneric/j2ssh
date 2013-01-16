@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="sshtools" default="build" basedir=".">
+    <!-- Set global properties for this build -->
+    <property name="build.examples" value="./examples"/>
+    <property name="build.dist" value="./dist"/>
+    <property name="build.conf" value="./conf"/>
+    <property name="build.dist.classes" value="${build.dist}/classes"/>
+    <property name="build.dist.lib" value="${build.dist}/lib"/>
+    <property name="build.dependency" value="./lib"/>
+    <property name="build.src" value="./src"/>
+    <property name="build.docs" value="./docs"/>
+
+    <!-- Global build parameters -->
+    <property file="j2ssh.properties"/>
+
+    <!-- Set this to 'yes' if you wish the classes
+        to be compiled with debug information -->
+    <property name="build.debugInformation" value="off"/>
+
+    <!-- Build the project classpath -->
+    <path id="project.class.path">
+      <fileset dir="${build.dependency}">
+        <include name="*.jar"/>
+      </fileset>
+      <pathelement path="${build.dist.classes}/"/>
+    </path>
+
+   <target name="compile" depends="clean">
+       <echo message="Creating directories"/>
+       <!-- Create the output directory -->
+       <mkdir dir="${build.dist}"/>
+       <mkdir dir="${build.dist.classes}"/>
+       <!-- Copy the projects resources to the classpath -->
+       <echo message="Copying resource to classpath"/>
+       <copy todir="${build.dist.classes}" >
+          <fileset dir="${build.src}" >
+             <include name="**/*.png"/>
+             <include name="**/*.gif"/>
+             <include name="**/*.xpm"/>
+             <include name="**/*.ico"/>
+          </fileset>
+       </copy>
+       <!-- Compile the source -->
+       <javac srcdir="${build.src}" debug="${build.debugInformation}"
+              destdir="${build.dist.classes}" includes="**/*.java"
+	      source="1.4" target="1.4">
+	       <classpath refid="project.class.path"/>
+       </javac>
+
+    </target>
+    <target name="build" depends="compile">
+         <mkdir dir="${build.dist.lib}"/>
+
+         <!-- Build the J2SSH library files -->
+ 	         <jar jarfile="${build.dist.lib}/j2ssh-core-${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}.jar" basedir="${build.dist.classes}">
+                <include name="com/sshtools/j2ssh/**/*.class"/>
+                <manifest>
+                   <attribute name="Product-Version"
+                         value="${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}"/>
+                 </manifest>
+             </jar>
+
+             <jar jarfile="${build.dist.lib}/j2ssh-ant-${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}.jar" basedir="${build.dist.classes}">
+                <include name="com/sshtools/ant/**/*.class"/>
+                <manifest>
+                   <attribute name="Product-Version"
+                         value="${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}"/>
+                 </manifest>
+             </jar>
+
+             <jar jarfile="${build.dist.lib}/j2ssh-dameon-${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}.jar" basedir="${build.dist.classes}">
+                <include name="com/sshtools/daemon/**/*.class"/>
+                <exclude name="com/sshtools/daemon/windows/**/*.*"/>
+                <exclude name="com/sshtools/daemon/linux/**/*.*"/>
+                <manifest>
+                   <attribute name="Product-Version" 
+                         value="${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}"/>
+                 </manifest>
+             </jar>
+             
+   	         <jar jarfile="${build.dist.lib}/j2ssh-common-${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}.jar" basedir="${build.dist.classes}">
+                <include name="com/sshtools/common/**/*.class"/>
+                <include name="com/sshtools/common/**/*.png"/>
+                <include name="com/sshtools/common/**/*.gif"/>
+                <manifest>
+                   <attribute name="Product-Version"
+                         value="${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}"/>
+                 </manifest>
+             </jar>
+    </target>
+
+        <!-- JAVADOCS TARGET -->
+    <target name="javadoc" depends="build">
+
+     <mkdir dir="${build.docs}"/>
+
+     <javadoc packagenames="com.sshtools.*"
+           sourcepath="${build.src}"
+           defaultexcludes="yes"
+           destdir="${build.docs}"
+           author="true"
+           version="true"
+           use="true"
+           windowtitle="J2SSH Javadocs"
+	       notree="true">
+    <doctitle><![CDATA[<h1>SSHTools J2SSH</h1><br>
+    <p>SSH (Secure Shell) is a program to log into another computer over a network, to execute commands in a
+remote machine and to move files from one machine to another. It provides strong authentication and secure
+communication over insecure networks.</p>]]></doctitle>
+<bottom><![CDATA[<i>Copyright &#169; 2002-2003 Lee David Painter & Contributors. All Rights Reserved.</i>]]></bottom>
+</javadoc>
+
+ </target>
+
+  <!-- Clean up all the generated files -->
+  <target name="clean" >
+    <!-- delete the classpath -->
+    <delete dir="${build.dist.classes}"/>
+    <delete dir="${build.dist.lib}"/>
+    <delete dir="${build.dist}"/>
+  </target>
+
+
+  <target name="release">
+
+   <delete dir="./release"/>
+   <mkdir dir="./release"/>
+   <zip zipfile="./release/j2ssh-${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}-src.zip">
+     <zipfileset dir="${build.src}" includes="**/*.java" prefix="j2ssh/src"/>
+     <zipfileset dir="${build.src}" includes="**/*.png" prefix="j2ssh/src"/>
+     <zipfileset dir="${build.src}" includes="**/*.gif" prefix="j2ssh/src"/>
+     <zipfileset dir="${build.src}" includes="**/*.ico" prefix="j2ssh/src"/>
+     <zipfileset dir="${build.src}" includes="**/*.xpm" prefix="j2ssh/src"/>
+     <zipfileset dir="${build.conf}" includes="*.xml" prefix="j2ssh/conf"/>
+     <zipfileset dir="${build.dependency}" includes="*.jar" prefix="j2ssh/lib"/>
+     <zipfileset dir="${build.dependency}" includes="*.LICENSE" prefix="j2ssh/lib"/>
+     <zipfileset dir="${build.examples}" includes="*.java" prefix="j2ssh/examples"/>
+     <zipfileset dir="." includes="build.xml,j2ssh.properties,INSTALL,LICENSE,ChangeLog,AUTHORS" prefix="j2ssh"/>
+   </zip>
+
+   <unzip src="./release/j2ssh-${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}-src.zip"
+         dest="./release/j2ssh"/>
+   <tar tarfile="./release/j2ssh-${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}-src.tar"
+        basedir="./release/j2ssh"/>
+    <gzip zipfile="./release/j2ssh-${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}-src.tar.gz"
+       src="./release/j2ssh-${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}-src.tar"/>
+
+  <delete file="./release/j2ssh-${j2ssh.version.major}.${j2ssh.version.minor}.${j2ssh.version.build}-src.tar"/>
+  <delete dir="./release/j2ssh"/>
+  </target>
+</project>
