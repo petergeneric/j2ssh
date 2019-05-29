@@ -151,7 +151,7 @@ public abstract class NativeProcessProvider { //implements SessionDataProvider {
  *
  * @throws IOException
  */
-    public abstract boolean createProcess(String command, Map environment)
+    public abstract boolean createProcess(String command, Map<String, String> environment)
         throws IOException;
 
     /**
